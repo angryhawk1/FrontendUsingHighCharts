@@ -3,8 +3,22 @@
 angular.module('myApp.controllers.CSVDataController', ['myApp.services.CSVDataService','myApp.services.interControllerCommunication'])
     .controller('CSVDataController', [ 'CSVDataService', 'InterControllerCommunication','$scope',function(csvDataService, icc, $scope) {
        var jsonData;
-        var detectorList = ["D06","D07","D08","D09","D10"]
-        function plotSaturationDegree(jsonData, id, fieldName) {
+        var detectorList = ["D01",
+            "D02",
+            "D03",
+            "D04",
+            "D05",
+            "D06",
+            "D07",
+            "D08",
+            "D09",
+            "D10"];
+        var detectorList1 = [{"id": "D01", "type": "spline", "column": "saturationDegree", "scaling": "1"},
+            {"id": "D01", "type": "bar", "column": "nov", "scaling": "10"},
+            {"id": "D10", "type": "spline", "column": "saturationDegree", "scaling": "1"},
+            {"id": "D10", "type": "bar", "column": "nov", "scaling": "10"}]
+
+        function plotSaturationDegree(jsonData, id, fieldName, scale) {
             var list = [];
             for (var i = 0; i < jsonData.length; i++) {
                 if (jsonData[i].detectorId == id) {
@@ -13,8 +27,8 @@ angular.module('myApp.controllers.CSVDataController', ['myApp.services.CSVDataSe
                     if(val < 0) {
                         val = 0;
                     }
-                    list.push(val);
-                    //list.push(parseInt(jsonData[i].currentCycle));
+
+                    list.push(val * scale);
                 }
             }
             return list;
@@ -24,13 +38,13 @@ angular.module('myApp.controllers.CSVDataController', ['myApp.services.CSVDataSe
             $scope.json = json;
             jsonData = json;
             var item;
-            for (item in detectorList) {
-                var detStats = plotSaturationDegree(jsonData,detectorList[item],"saturationDegree");
+            for (item in detectorList1) {
+                var detStats = plotSaturationDegree(jsonData, detectorList1[item].id, detectorList1[item].column, detectorList1[item].scaling);
                 $scope.chartConfig.series.push({
-                    name: detectorList[item],
+                    name: detectorList1[item].id,
                     data: detStats,
                     id: detStats.detectorId,
-                    type: "spline"
+                    type: detectorList1[item].type
                 });
             }
         }
