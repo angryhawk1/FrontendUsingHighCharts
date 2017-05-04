@@ -87,8 +87,8 @@ angular.module('myApp.controllers.CSVDataController', ['myApp.services.CSVDataSe
 
         var seriesId = 0;
 
-        $scope.addSeries = function () {
-            csvDataService.request("/utils/datasim_results.csv");
+        $scope.addSeries = function (url) {
+            csvDataService.request(url);
         }
 
         $scope.removeRandomSeries = function () {
