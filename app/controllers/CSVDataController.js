@@ -3,20 +3,10 @@
 angular.module('myApp.controllers.CSVDataController', ['myApp.services.CSVDataService','myApp.services.interControllerCommunication'])
     .controller('CSVDataController', [ 'CSVDataService', 'InterControllerCommunication','$scope',function(csvDataService, icc, $scope) {
        var jsonData;
-        var detectorList = ["D01",
-            "D02",
-            "D03",
-            "D04",
-            "D05",
-            "D06",
-            "D07",
-            "D08",
-            "D09",
-            "D10"];
+
         var detectorList1 = [{"id": "D01", "type": "spline", "column": "saturationDegree", "scaling": "1"},
-            {"id": "D01", "type": "bar", "column": "nov", "scaling": "10"},
-            {"id": "D10", "type": "spline", "column": "saturationDegree", "scaling": "1"},
-            {"id": "D10", "type": "bar", "column": "nov", "scaling": "10"}]
+            {"id": "D05", "type": "spline", "column": "saturationDegree", "scaling": "1"},
+            {"id": "D10", "type": "spline", "column": "saturationDegree", "scaling": "1"}]
 
         function plotSaturationDegree(jsonData, id, fieldName, scale) {
             var list = [];
@@ -98,7 +88,7 @@ angular.module('myApp.controllers.CSVDataController', ['myApp.services.CSVDataSe
         var seriesId = 0;
 
         $scope.addSeries = function () {
-            csvDataService.request("/utils/data.csv");
+            csvDataService.request("/utils/datasim_results.csv");
         }
 
         $scope.removeRandomSeries = function () {
