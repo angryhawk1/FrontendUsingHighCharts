@@ -1,6 +1,6 @@
  <div ng-controller="CSVDataController">
         <div class="row">
-            <div class="col-6">
+            <div class="col-9">
                 <div class="span9">
                     <div class="row">
                         <highchart id="chart" config="chartConfig" class="span9" ></highchart>
@@ -8,13 +8,13 @@
                     <div class="row-fluid">{{chartConfig.getChartObj().chartHeight}}</div>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-3">
                 <p><strong>Enter the URL for the file</strong></p>
                 <input type="text" ng-model="url">
                 <div style="text-align:center">
                     <button class='myButton' ng-click='addSeries(url)'><strong>Process</strong></button>
                 </div>
-                <strong>URL : /utils/datasim_results.csv</strong>
+                <strong>URL : /utils/execution_results.csv</strong>
             </div>
 
         </div>

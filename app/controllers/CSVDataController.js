@@ -4,21 +4,36 @@ angular.module('myApp.controllers.CSVDataController', ['myApp.services.CSVDataSe
     .controller('CSVDataController', [ 'CSVDataService', 'InterControllerCommunication','$scope',function(csvDataService, icc, $scope) {
        var jsonData;
 
-        var detectorList1 = [{"id": "D01", "type": "spline", "column": "saturationDegree", "scaling": "1"},
-            {"id": "D05", "type": "spline", "column": "saturationDegree", "scaling": "1"},
-            {"id": "D10", "type": "spline", "column": "saturationDegree", "scaling": "1"}]
+        var detectorList1 = [
+            {"id": "D01", "type": "spline", "column": "saturationDegree", "scaling": 1},
+            {"id": "D05", "type": "spline", "column": "saturationDegree", "scaling": 1},
+            {"id": "D10", "type": "spline", "column": "saturationDegree", "scaling": 1}]
 
-        function plotSaturationDegree(jsonData, id, fieldName, scale) {
+        function plotSaturationDegree(jsonData, type, id, fieldName, scale) {
             var list = [];
             for (var i = 0; i < jsonData.length; i++) {
                 if (jsonData[i].detectorId == id) {
                     var json = jsonData[i];
                     var val = parseInt(json[fieldName]);
+                    var json = {};
                     if(val < 0) {
                         val = 0;
                     }
-
-                    list.push(val * scale);
+                    if(val < 2 && type == "bar") {
+                        //json.color = "#00FF00";
+                        //json.name = "Low";
+                    } else if(val > 2 && type == "bar") {
+                        //json.color = "#FF0000";
+                        //json.name = "High";
+                    } else {
+                        //json.color = "#FFB266";
+                        //json.name = "Moderate"
+                    }
+                    if(type == "spline") {
+                        json.color = "#0C75B6";
+                    }
+                    json.y = val*scale;
+                    list.push(json);
                 }
             }
             return list;
@@ -29,7 +44,7 @@ angular.module('myApp.controllers.CSVDataController', ['myApp.services.CSVDataSe
             jsonData = json;
             var item;
             for (item in detectorList1) {
-                var detStats = plotSaturationDegree(jsonData, detectorList1[item].id, detectorList1[item].column, detectorList1[item].scaling);
+                var detStats = plotSaturationDegree(jsonData, detectorList1[item].type ,detectorList1[item].id, detectorList1[item].column, detectorList1[item].scaling);
                 $scope.chartConfig.series.push({
                     name: detectorList1[item].id,
                     data: detStats,
@@ -129,8 +144,27 @@ angular.module('myApp.controllers.CSVDataController', ['myApp.services.CSVDataSe
             },
             series: $scope.chartSeries,
             title: {
-                text: 'Cycle vs Saturation'
-            }
+                //text: 'Cycle vs Saturation'
+            },
+            yAxis: { // Primary yAxis
+                title: {
+                    text: 'DoS (in %)',
+                },
+                tickInterval: 5,
+                min : 0,
+                max : 125,
+                gridLineWidth: 1
+            },
+            xAxis: { // Primary xAxis
+                title: {
+                    text: 'Cycles',
+                },
+                tickInterval: 10,
+                gridLineWidth: 1
+            },
+            credits: {
+                enabled: false
+            },
         }
 
         $scope.reflow = function () {

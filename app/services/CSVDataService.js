@@ -28,8 +28,8 @@ angular.module('myApp.services.CSVDataService', ['papa-promise','myApp.services.
                         detectorId : columnSet[1],
                         totalSpaceTime : columnSet[2],
                         nov : columnSet[3],
-                        optimumSpaceTime : columnSet[4],
-                        greenPhaseTime: columnSet[5],
+                        greenPhaseTime: columnSet[4],
+                        optimumSpaceTime : columnSet[5],
                         saturationDegree: columnSet[6]
                     }
                      returnList.push(json);
